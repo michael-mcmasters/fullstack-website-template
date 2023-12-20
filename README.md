@@ -1,6 +1,6 @@
 ## About
 
-This repo serves as a template for quickly deploying serverless fullstack websites to AWS within 5 minutes.
+This repo serves as a template for quickly deploying fullstack serverless websites to AWS within 5 minutes.
 
 It encompasses Terraform, AWS CloudFront, API Gateway, Lambda, S3, React and Core Java all in one.
 
