@@ -2,7 +2,7 @@
 
 This repo serves as a template to quickly deploy serverless fullstack websites to AWS.
 
-It encompasses React, Core Java, Terraform, AWS CloudFront, API Gateway, Lambda, and S3 all in one.
+It encompasses Terraform, AWS CloudFront, API Gateway, Lambda, S3, React and Core Java all in one.
 
 These README instructions are specific for my usecase but should work for anyone with minor adjustments. Simply create a Terraform Cloud username and an organization (it's free!). Then replace my name from the CLI commands and Terraform link below.
 
