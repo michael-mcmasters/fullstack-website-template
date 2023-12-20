@@ -6,7 +6,7 @@ It encompasses React, Core Java, Terraform, AWS CloudFront, API Gateway, Lambda,
 
 These README instructions are specific for my usecase but should work for anyone with minor adjustments. Simply create a Terraform Cloud username and an organization (it's free!). Then replace my name from the CLI commands and Terraform link below.
 
-## Setup
+## Setup Terraform
 
 Run this command to get your AWS Access Key and Secret Key
 ```
