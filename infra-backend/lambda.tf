@@ -1,5 +1,5 @@
 locals {
-  # Unfortunately, you can't deploy a Lambda without a zip file. So we deploy a dummy jar and then upload the real codebase through the CLI (not in this repo)
+  # Unfortunately, you can't deploy a Lambda without a zip/jar file. So we deploy a dummy jar and then upload the real codebase through the CLI (not in this repo)
   # Source: https://www.reddit.com/r/Terraform/comments/j7dpqq/store_lambda_function_code_separate_from_tf_code/
   jar_file = "./lambda-placeholder-code.jar"
 }
@@ -13,7 +13,7 @@ resource "aws_lambda_function" "default" {
 
   source_code_hash = "${base64sha256(filebase64(local.jar_file))}"
 
-  runtime = "java17"
+  runtime = var.lambda_runtime
 
   environment {
     variables = {
@@ -50,18 +50,5 @@ resource "aws_iam_role_policy_attachment" "basic_execution_role_policy" {
 # The Cloudwatch Log Group
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name = "/aws/lambda/${aws_lambda_function.default.function_name}"
-
   retention_in_days = 30
-}
-
-# Allows API Gateway to invoke Lambda
-resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.default.function_name}"
-  principal     = "apigateway.amazonaws.com"
-
-  # The /*/* portion grants access from any method on any resource
-  # within the API Gateway "REST API".
-  source_arn = "${aws_api_gateway_rest_api.default.execution_arn}/*/*"
 }

@@ -64,3 +64,15 @@ resource "aws_api_gateway_deployment" "default" {
   rest_api_id = "${aws_api_gateway_rest_api.default.id}"
   stage_name  = "test"
 }
+
+# Allows API Gateway to invoke Lambda
+resource "aws_lambda_permission" "apigw" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = "${aws_lambda_function.default.function_name}"
+  principal     = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_rest_api.default.execution_arn}/*/*"
+}
