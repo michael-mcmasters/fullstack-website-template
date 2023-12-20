@@ -79,6 +79,7 @@ backend/!**/src/main/**/target/
 backend/!**/src/test/**/target/
 
 ### IntelliJ IDEA ###
+*.idea/*
 backend/.idea/vcs.xml
 backend/.idea/modules.xml
 backend/.idea/jarRepositories.xml
