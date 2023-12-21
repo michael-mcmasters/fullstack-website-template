@@ -7,7 +7,7 @@ It encompasses Terraform, AWS CloudFront, S3, API Gateway, Lambda, DynamoDB, Rea
 These README instructions are specific for my usecase but should work for anyone with minor adjustments. Simply create a Terraform Cloud username and an organization (it's free!). Then replace my name from the CLI commands and Terraform link below.
 
 # Setup
-## 1. Setup Terraform
+## 1. Prepare Terraform
 
 Run this command to get your AWS Access Key and Secret Key
 ```
