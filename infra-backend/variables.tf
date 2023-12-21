@@ -1,3 +1,7 @@
+variable "project_tag" {
+  default = "website-and-infra-2"
+}
+
 variable "api_gateway_name" {
   default = "website-and-infra-2-apigw"
 }
@@ -16,4 +20,8 @@ variable "lambda_runtime" {
 
 variable "lambda_role_name" {
   default = "website-and-infra-2-lambda-role"
+}
+
+variable "dynamodb_name" {
+  default = "website-and-infra-2-dynamodb"
 }
