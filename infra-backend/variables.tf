@@ -22,6 +22,10 @@ variable "lambda_role_name" {
   default = "website-and-infra-2-lambda-role"
 }
 
+variable "lambda_role_policy_to_dynamodb_name" {
+  default = "website-and-infra-2-lambda-to-dynamodb-policy"
+}
+
 variable "dynamodb_name" {
   default = "website-and-infra-2-dynamodb"
 }
