@@ -6,7 +6,8 @@ It encompasses Terraform, AWS CloudFront, S3, API Gateway, Lambda, DynamoDB, Rea
 
 These README instructions are specific for my usecase but should work for anyone with minor adjustments. Simply create a Terraform Cloud username and an organization (it's free!). Then replace my name from the CLI commands and Terraform link below.
 
-## Setup Terraform
+# Setup
+## 1. Setup Terraform
 
 Run this command to get your AWS Access Key and Secret Key
 ```
@@ -42,7 +43,7 @@ terraform login
 It will open the browser prompting you to login, then will give you a token that you paste back into your CLI
 
 
-## Deploy the Backend
+## 2. Deploy the Backend (for the first time)
 
 In ./infra-backend/main.tf, set workspaces.name to the backend workspace you created
 <br />
@@ -58,7 +59,7 @@ terraform apply
 The console will log your new API Gateway endpoint.
 
 
-## Deploy the UI
+## 3. Deploy the UI (for the first time)
 
 In ./ui/src/app.js, set ENDPOINT to your new API Gateway endpoint
 <br />
@@ -86,8 +87,26 @@ Go to your website and you'll see your UI deployed, along with "hello world" bei
 <br />
 `{"message":"hello world","version":"1"}`
 
+Congrats!
 
-## Deploy UI (after setting up)
+These setup commands should only be used the first time your deploy to AWS. 
+
+From here on, use the Common Commands section to continue deploying any changes you make.
+
+
+# Common Commands
+
+(This section is a work in progress)
+
+## Deploy Backend
+```
+cd backend/target/
+aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://lambda-placeholder-code-1.0-SNAPSHOT.jar
+```
+
+## Deploy UI
+Make sure you're in your ./ui directory with `cd ./ui`
+
 In React, build the project to generate a ./build directory
 ```
 npm run build
@@ -106,10 +125,3 @@ aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
 If successful, the content inside of ./build will be uploaded to S3 (index.html, static/, etc).
 <br />
 CloudFront directs traffic to index.html.
-
-
-## Deploy Backend (after setting up)
-```
-cd backend/target/
-aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://lambda-placeholder-code-1.0-SNAPSHOT.jar
-```
