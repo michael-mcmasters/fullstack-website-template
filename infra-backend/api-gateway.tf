@@ -54,15 +54,27 @@ resource "aws_api_gateway_integration" "lambda_root" {
   uri                     = "${aws_lambda_function.default.invoke_arn}"
 }
 
-# Activates this configuration and exposes the endpoint
+# Deploys these endpoints. Here we are deploying a "test" stage. But you can deploy multiple stages such as dev, perf, prod, etc.
 resource "aws_api_gateway_deployment" "default" {
   depends_on = [
     "aws_api_gateway_integration.lambda",
-    "aws_api_gateway_integration.lambda_root",
+    "aws_api_gateway_integration.lambda_root"
+    # "aws_cloudwatch_log_group.apigw_log_group"
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.default.id}"
   stage_name  = "test"
+}
+
+resource "aws_api_gateway_method_settings" "example" {
+  rest_api_id = aws_api_gateway_rest_api.default.id
+  stage_name  = aws_api_gateway_deployment.default.stage_name
+  method_path = "*/*"
+
+  settings {
+    metrics_enabled = true
+    logging_level   = "INFO"
+  }
 }
 
 # Allows API Gateway to invoke Lambda
