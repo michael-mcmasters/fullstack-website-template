@@ -48,7 +48,7 @@ In ./infra-backend/main.tf, set workspaces.name to the backend workspace you cre
 <br />
 In ./infra-backend/variables.tf, set the values so they are unique in your Cloud environement
 <br />
-cd into ./infra-ui, initialize Terraform, and apply
+Run these commands to deploy your backend infra
 ```
 cd infra-backend
 terraform init
@@ -62,7 +62,7 @@ In ./infra-ui/main.tf, set workspaces.name to the UI workspace you created
 <br />
 In ./infra-ui/variables.tf, set the values so they are unique in your Cloud environement
 <br />
-cd into ./infra-ui, initialize Terraform, and apply
+Run these commands to deploy your UI infra
 ```
 cd infra-ui
 terraform init
@@ -70,7 +70,7 @@ terraform apply
 ```
 The CLI will log your website URL
 
-Now deploy the UI code to the new bucket
+Now build and deploy the UI code to the new bucket
 ```
 cd ../ui
 npm install
@@ -78,6 +78,6 @@ npm run build
 aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
 ```
 
-Go to your website URL and you will see your code deployed, and "hello world" being fetched from the backend lambda.
+Go to your website and you'll see your UI deployed, along with "hello world" being fetched from your backend Lambda
 <br />
 `{"message":"hello world","version":"1"}`
