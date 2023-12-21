@@ -1,10 +1,18 @@
 ## About
 
-This repo serves as a template for quickly deploying fullstack serverless websites to AWS within 5 minutes.
-
-It encompasses Terraform, AWS CloudFront, S3, API Gateway, Lambda, DynamoDB, React and Core Java all in one.
+This repo serves as a template for quickly deploying fullstack websites to AWS within 5 minutes.
 
 These README instructions are specific for my usecase but should work for anyone with minor adjustments. Simply create a Terraform Cloud username and an organization (it's free!). Then replace my name from the CLI commands and Terraform link below.
+
+Technologies:
+- Terraform
+- React
+- Core Java
+- API Gateway
+- Lambda
+- DynamoDB
+- AWS CloudFront
+- S3
 
 # Setup
 ## 1. Prepare Terraform
@@ -41,6 +49,9 @@ Login to Terraform Cloud from your CLI
 terraform login
 ```
 It will open the browser prompting you to login, then will give you a token that you paste back into your CLI
+<br />
+<br />
+<br />
 
 
 ## 2. Deploy the Backend (for the first time)
@@ -57,7 +68,9 @@ terraform apply
 ```
 
 The console will log your new API Gateway endpoint.
-
+<br />
+<br />
+<br />
 
 ## 3. Deploy the UI (for the first time)
 
@@ -92,7 +105,9 @@ Congrats!
 These setup commands should only be used the first time your deploy to AWS. 
 
 From here on, use the Common Commands section to continue deploying any changes you make.
-
+<br />
+<br />
+<br />
 
 # Common Commands
 
