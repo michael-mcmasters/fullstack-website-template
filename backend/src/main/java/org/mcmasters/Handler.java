@@ -10,15 +10,24 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 
 public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String version = "3";
+    private static final String version = "7";
 
+    private PlaceholderService placeholderService;
+
+
+    public Handler() {
+        this.placeholderService = new PlaceholderService();
+    }
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent request, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         try {
             Log.info("Lambda received request for API version " + version + ". Request: " + request.toString());
+
+            placeholderService.process(request.toString());
             String body = String.format("{ \"message\": \"hello world\", \"version\": \"%s\" }", version);
             response = generateResponse(200, body);
+
             Log.info("Completed processing request");
             return response;
         } catch (Exception ex) {

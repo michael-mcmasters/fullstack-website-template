@@ -117,7 +117,7 @@ From here on, use the Common Commands section to continue deploying any changes 
 
 ## Deploy Backend
 ```
-cd backend/target/ && aws lambda update-function-code --function-name website-and-infra-2-lambda --zip-file fileb://lambda-placeholder-code-1.0-SNAPSHOT.jar
+aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://backend/target/lambda-placeholder-code-1.0-SNAPSHOT.jar
 ```
 
 ## Deploy UI
