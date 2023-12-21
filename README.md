@@ -55,9 +55,13 @@ terraform init
 terraform apply
 ```
 
+The console will log your new API Gateway endpoint.
+
 
 ## Deploy the UI
 
+In ./ui/src/app.js, set ENDPOINT to your new API Gateway endpoint
+<br />
 In ./infra-ui/main.tf, set workspaces.name to the UI workspace you created
 <br />
 In ./infra-ui/variables.tf, set the values so they are unique in your Cloud environement
@@ -81,3 +85,31 @@ aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
 Go to your website and you'll see your UI deployed, along with "hello world" being fetched from your backend Lambda
 <br />
 `{"message":"hello world","version":"1"}`
+
+
+## Deploy UI (after setting up)
+In React, build the project to generate a ./build directory
+```
+npm run build
+```
+
+Delete all current objects in the bucket
+```
+aws s3 rm s3://<BUCKET_NAME> --recursive
+```
+
+Upload the new ./build to the bucket
+```
+aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
+```
+
+If successful, the content inside of ./build will be uploaded to S3 (index.html, static/, etc).
+<br />
+CloudFront directs traffic to index.html.
+
+
+## Deploy Backend (after setting up)
+```
+cd backend/target/
+aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://lambda-placeholder-code-1.0-SNAPSHOT.jar
+```

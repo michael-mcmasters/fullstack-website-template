@@ -2,6 +2,8 @@ import {useState, useEffect} from "react";
 import logo from './logo.svg';
 import './App.css';
 
+const ENDPOINT = "https://ggi4glh0a0.execute-api.us-east-1.amazonaws.com/test/";
+
 function App() {
   
   const [response, setResponse] = useState({});
@@ -10,7 +12,7 @@ function App() {
   useEffect(() => {
     (async function fetchInitialData() {
       console.log("Fetching ...");
-      const response = await fetch("https://dxap8oybo9.execute-api.us-east-1.amazonaws.com/test");
+      const response = await fetch(ENDPOINT);
       const responseJson = await response.json();
       setResponse(responseJson);
       console.log("Fetched. Response is: " + responseJson);
