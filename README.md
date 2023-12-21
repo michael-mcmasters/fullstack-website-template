@@ -11,7 +11,9 @@ Technologies:
 - API Gateway
 - Lambda
 - DynamoDB
-- AWS CloudFront
+- CloudWatch
+- CloudFront
+- Route53
 - S3
 
 # Setup
