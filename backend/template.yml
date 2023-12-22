@@ -1,0 +1,19 @@
+# This file is used for running Lambda locally via AWS SAM. It is *not* used for any higher environments.
+# To run Lambda locally, run "sam build" and then "sam local start-api -p 8080"
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 128
+      Handler: org.mcmasters.Handler::handleRequest
+      CodeUri: /Users/michaelmcmasters/dev/2023/website-and-infra-2/backend
+      Runtime: java17
+      Architectures:
+        - x86_64
+      Events:
+        LocalApiCalls:
+          Type: Api
+          Properties:
+            Path: /local/{proxy+}   # {proxy+} allows all paths to invoke this Lambda locally so that we don't need to list them all individually
+            Method: ANY             # Allows all methods to invoke this Lambda locally, GET, PUT, POST, etc

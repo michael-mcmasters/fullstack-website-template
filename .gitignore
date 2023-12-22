@@ -73,6 +73,8 @@ ui/yarn-error.log*
 
 
 # ****** Java ******
+backend/.aws-sam
+
 backend/target/
 backend/!.mvn/wrapper/maven-wrapper.jar
 backend/!**/src/main/**/target/
