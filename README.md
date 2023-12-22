@@ -141,3 +141,30 @@ aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
 If successful, the content inside of ./build will be uploaded to S3 (index.html, static/, etc).
 <br />
 CloudFront directs traffic to index.html.
+
+## Run Locally
+First, make sure you have Docker and AWS Sam CLI installed. One you do, open Docker.
+
+Cd into your /backend directory with `cd ./backend`
+
+Build your Lambda SAM configuration.
+<br />
+This will use your ./backend/template.yml file to generate an .aws-sam file.
+<br />
+Note that each time you change your backend code, you'll need to run these next two commands again.
+```
+sam build
+```
+
+Now run your app locally on port 8080
+```
+sam local start-api -p 8080
+```
+
+The CLI will print the address:port the app is running on.
+<br />
+
+To test, copy it and append "local/abc" to the end. The full path should look something similar to "http://127.0.0.1:8080/local/abc"
+<br />
+
+Put it in your browser to activate a GET request and after a few seconds you'll get a response. Check the terminal for your Lambda logs.
