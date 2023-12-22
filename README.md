@@ -1,4 +1,4 @@
-## About
+# About
 
 This repo serves as a template for quickly deploying fullstack websites to AWS within 5 minutes.
 
@@ -94,7 +94,7 @@ Now build and deploy the UI code to the new bucket
 ```
 cd ../ui
 npm install
-npm run build
+npm run build:dev
 aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
 ```
 
@@ -125,7 +125,7 @@ Make sure you're in your ./ui directory with `cd ./ui`
 
 In React, build the project to generate a ./build directory
 ```
-npm run build
+npm run build:dev
 ```
 
 Delete all current objects in the bucket
@@ -142,7 +142,10 @@ If successful, the content inside of ./build will be uploaded to S3 (index.html,
 <br />
 CloudFront directs traffic to index.html.
 
-## Run Locally
+# Run Locally
+
+## Backend
+
 First, make sure you have Docker and AWS Sam CLI installed. One you do, open Docker.
 
 Cd into your /backend directory with `cd ./backend`
@@ -168,3 +171,19 @@ To test, copy it and append "local/abc" to the end. The full path should look so
 <br />
 
 Put it in your browser to activate a GET request and after a few seconds you'll get a response. Check the terminal for your Lambda logs.
+
+# UI
+
+Install 'env-cmd' if you don't have it already.
+(This may not be necessary. Test on another computer and remove if not.)
+```
+npm install --save-dev env-cmd
+```
+
+Cd into your /ui directory with `cd ../ui`
+
+Run the app in the local profile
+```
+npm run start:local
+```
+

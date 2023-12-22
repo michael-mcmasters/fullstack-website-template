@@ -1,18 +1,16 @@
 import {useState, useEffect} from "react";
 import logo from './logo.svg';
 import './App.css';
-
-const ENDPOINT = "https://ggi4glh0a0.execute-api.us-east-1.amazonaws.com/test/";
+import {CONFIG} from "./index.js";
 
 function App() {
   
   const [response, setResponse] = useState({});
-
   
   useEffect(() => {
     (async function fetchInitialData() {
       console.log("Fetching ...");
-      const response = await fetch(ENDPOINT);
+      const response = await fetch(CONFIG.ADD_ENDPOINT);
       const responseJson = await response.json();
       setResponse(responseJson);
       console.log("Fetched. Response is: " + responseJson);
