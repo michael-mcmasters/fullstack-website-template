@@ -57,7 +57,7 @@ terraform init
 terraform apply
 ```
 
-The console will log your API Gateway endpoint (your backend) and your Cloudwatch domain name (your website)
+The console will log your API Gateway endpoint (your backend) and your Cloudfront domain name (your website)
 
 ### 3) Prepare Code
 

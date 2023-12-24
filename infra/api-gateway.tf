@@ -54,7 +54,7 @@ resource "aws_api_gateway_integration" "lambda_root" {
   uri                     = "${aws_lambda_function.default.invoke_arn}"
 }
 
-# Deploys these endpoints. Here we are deploying a "test" stage. But you can deploy multiple stages such as dev, perf, prod, etc.
+# Deploys these endpoints. Here we are deploying a "dev" stage. But you can deploy multiple stages such as dev, perf, prod, etc.
 resource "aws_api_gateway_deployment" "default" {
   depends_on = [
     "aws_api_gateway_integration.lambda",
@@ -63,7 +63,7 @@ resource "aws_api_gateway_deployment" "default" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.default.id}"
-  stage_name  = "test"
+  stage_name  = "dev"
 }
 
 resource "aws_api_gateway_method_settings" "example" {

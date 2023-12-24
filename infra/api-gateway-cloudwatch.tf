@@ -1,6 +1,6 @@
 # This resource applies settings to all API Gateways in your cloud environment
 # It allows API Gateway to push logs to CloudWatch.
-# The generated Log Group will be "API-Gateway-Execution-Logs_<APIGATEWAY_ID>/<STAGE>"" ... (Example: API-Gateway-Execution-Logs_ggi4glh0a0/test)
+# The generated Log Group will be "API-Gateway-Execution-Logs_<APIGATEWAY_ID>/<STAGE>"" ... (Example: API-Gateway-Execution-Logs_ggi4glh0a0/dev)
   # APIGATEWAY_ID can be found in the AWS Console -> API Gateway -> APIs (left sidedrawer) Under the ID column
   # STAGE can be found in the "aws_api_gateway_deployment" resource
 resource "aws_api_gateway_account" "main" {
