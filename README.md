@@ -17,110 +17,74 @@ Technologies:
 - S3
 
 # Setup
-## 1. Prepare Terraform
+### 1) Prepare Terraform
 
 Run this command to get your AWS Access Key and Secret Key
 ```
-cat /Users/michaelmcmasters/.aws/credentials
+cat /Users/<YOUR_NAME>/.aws/credentials
 ```
 
-Go to Terraform Cloud: https://app.terraform.io/app/mcmasters/workspaces
+Go to Terraform Cloud: https://app.terraform.io
 <br />
-Create two new workspaces, one for the Backend and one for the UI
-<br />
-In **each** workspace, on the left sidebar, click "Variables":
+Create an account if you don't have one
 
-Add AWS_ACCESS_KEY_ID,
-<br />
-Set it to aws_access_key_id's value (from the cat command above),
-<br />
-Click Environment Variable,
-<br />
-Check "sensitive"
+Create a new workspace by clicking Add -> Workspace -> CLI-Driven Workflow -> Give it the name of your project -> Choose default project in the dropdown -> Create
 
-Add AWS_SECRET_ACCESS_KEY,
-<br />
-Set it to aws_secret_access_key's value (from the cat command above),
-<br />
-Click Environment Variable,
-<br />
-Check "sensitive"
+Once created, on the left sidebar, click Variables -> Add variable:
+1. Set `Key` to `AWS_ACCESS_KEY_ID`
+2. Set `Value` to `aws_access_key_id's` value (found from the cat command above)
+3. Select `Environment Variable`
+4. Check `Sensitive`
+5. Click `Add variable`
 
-Login to Terraform Cloud from your CLI
+In your CLI, Login to Terraform Cloud
 ```
 terraform login
 ```
-It will open the browser prompting you to login, then will give you a token that you paste back into your CLI
-<br />
-<br />
-<br />
+This will open your browser prompting you to login. Once you do it will give you a token. Copy/paste it back into your CLI
 
 
-## 2. Deploy the Backend (for the first time)
+### 2) Deploy Infrastructure to Your AWS Cloud
 
-In ./infra-backend/main.tf, set workspaces.name to the backend workspace you created
-<br />
-In ./infra-backend/variables.tf, set the values so they are unique in your Cloud environement
-<br />
-Run these commands to deploy your backend infra
+In `./infra/main.tf`, set workspaces.name to the workspace name you just created
+
+In `./infra/variables.tf`, set the values so they are unique in your Cloud environement. Most of these will be the names of your resources in AWS
+
+Run these commands to deploy your infra
 ```
-cd infra-backend
+cd ./infra
 terraform init
 terraform apply
 ```
 
-The console will log your new API Gateway endpoint.
-<br />
-<br />
-<br />
+The console will log your API Gateway endpoint (your backend) and your Cloudwatch domain name (your website)
 
-## 3. Deploy the UI (for the first time)
+### 3) Prepare Code
 
-In ./ui/src/environments/dev.js, set BASE_PATH to your new API Gateway endpoint
-<br />
-In ./infra-ui/main.tf, set workspaces.name to the UI workspace you created
-<br />
-In ./infra-ui/variables.tf, set the values so they are unique in your Cloud environment
-<br />
-Run these commands to deploy your UI infra
-```
-cd infra-ui
-terraform init
-terraform apply
-```
-The CLI will log your website URL
+In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint
 
-Now build and deploy the UI code to the new bucket
+Continue to the Deploy Backend and Deploy UI sections
+<br />
+When finished, you will see your live website in your browser
+
+
+
+# Deploy Backend
+Make sure you're in your ./backend directory with `cd ./backend`
+
+Build your project with Maven
 ```
-cd ../ui
-npm install
-npm run build:dev
-aws s3 cp ./build s3://<BUCKET_NAME>/ --recursive
+mvn package
 ```
 
-Go to your website and you'll see your UI deployed, along with "hello world" being fetched from your backend Lambda
-<br />
-`{"message":"hello world","version":"1"}`
-
-Congrats!
-
-These setup commands should only be used the first time your deploy to AWS. 
-
-From here on out, use the Common Commands section to continue deploying any changes you make.
-<br />
-<br />
-<br />
-
-# Common Commands
-
-(This section is a work in progress)
-
-## Deploy Backend
+Deploy the newly generated .jar file to your Lambda
 ```
 aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://backend/target/lambda-placeholder-code-1.0-SNAPSHOT.jar
 ```
 
-## Deploy UI
+If successful, the CLI will let you know. You can also log into AWS, go to your Lambda, and it will say Last Modified  a few seconds or minutes ago
+
+# Deploy UI
 Make sure you're in your ./ui directory with `cd ./ui`
 
 In React, build the project to generate a ./build directory
@@ -148,7 +112,7 @@ Before you can run these apps locally, make sure you follow the Setup section an
 
 Even though this is local, you'll still be interacting with your AWS resources (such as DynamoDb) in the cloud. This serverless architecture is cheap (we're talking pennies) but it's still something to be aware of.
 
-## Backend
+### 1) Backend
 
 First, make sure you have Docker and AWS Sam CLI installed. Once you do, open Docker.
 
@@ -179,11 +143,16 @@ curl <Replace_With_Local_Endpoint>
 ```
 If successful, you should see a response similar to `{ "message": "hello world", "version": "7" }`
 
-# UI
+### 2) UI
 
-Cd into your ./ui directory with `cd ./ui`
+Cd into your `./ui directory` with `cd ./ui`
 
-In ./ui/src/environments/local.js, set ADD_ENDPOINT to the backend's local endpoint you generated above.
+Install dependencies (if you haven't already)
+```
+npm install
+```
+
+In `./ui/src/environments/local.js`, set ADD_ENDPOINT to the backend's local endpoint you generated above.
 
 Run the app using the local profile
 ```
