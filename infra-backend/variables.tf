@@ -29,3 +29,11 @@ variable "lambda_role_policy_to_dynamodb_name" {
 variable "dynamodb_name" {
   default = "website-and-infra-2-dynamodb"
 }
+
+variable "s3_bucket_name" {
+  default = "website-and-infra-2"
+}
+
+variable "oac_name" {
+  default = "website-and-infra-2-oac"
+}
