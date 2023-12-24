@@ -9,7 +9,7 @@ terraform {
     organization = "mcmasters"
 
     workspaces {
-      name = "website-and-infra-2-backend"
+      name = "website-and-infra-2"
     }
   }
   
