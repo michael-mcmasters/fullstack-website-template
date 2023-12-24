@@ -10,9 +10,7 @@ resource "aws_lambda_function" "default" {
   function_name = var.lambda_name
   role          = aws_iam_role.lambda_role.arn
   handler       = "org.mcmasters.Handler::handleRequest"
-  timeout       = 60
-
-  source_code_hash = "${base64sha256(filebase64(local.jar_file))}"
+  timeout       = 121
 
   runtime = var.lambda_runtime
 
