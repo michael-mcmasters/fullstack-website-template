@@ -20,22 +20,33 @@ Technologies:
 ### 1) Prepare Terraform
 
 Run this command to get your AWS Access Key and Secret Key
+<br />
 ```
 cat /Users/<YOUR_NAME>/.aws/credentials
 ```
 
 Go to Terraform Cloud: https://app.terraform.io
+<br />Create an account if you don't have one
+
+What we want to do is created workspaces. Workspaces control deploying infrastructure to our different environments. We should have a workspace for dev, test, prod, and any other envs you may want.
+
+To create a new workspace, click Add -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose default project in the dropdown -> Create
+
+Once created, on the right look for the `tags` dropdown, click it, type the name you want your project to be and hit enter. This will tell our project that it can use this workspace.
+
+Since workspaces control environments, we'll need to add some environment variables.
 <br />
-Create an account if you don't have one
+On the left sidebar, click Variables -> Add the following variables with their key and value:
 
-Create a new workspace by clicking Add -> Workspace -> CLI-Driven Workflow -> Give it the name of your project -> Choose default project in the dropdown -> Create
+Key | Value                                                      | Additional                                          | Explanation
+--- |------------------------------------------------------------|-----------------------------------------------------| -------
+AWS_ACCESS_KEY_ID | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account
+AWS_SECRET_ACCESS_KEY | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account
+TF_CLI_ARGS | -var-file "environments/dev.tfvars"                      |                                                 | Tells this workspace to use your ./infra/environments/dev.tfvars config
 
-Once created, on the left sidebar, click Variables -> Add variable:
-1. Set `Key` to `AWS_ACCESS_KEY_ID`
-2. Set `Value` to `aws_access_key_id's` value (found from the cat command above)
-3. Select `Environment Variable`
-4. Check `Sensitive`
-5. Click `Add variable`
+Now you have a `dev workspace`.
+
+Repeat these steps to create a `test workspace`. Do everything the same except name the workspace `"test"`. And set the `TF_CLI_ARGS` environment variable to  `-var-file "environments/test.tfvars"`
 
 In your CLI, Login to Terraform Cloud
 ```
