@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 // Terraform Core: Reads all .tf files / configurations and builds the resource dependency graph
