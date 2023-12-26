@@ -25,28 +25,36 @@ Run this command to get your AWS Access Key and Secret Key
 cat /Users/<YOUR_NAME>/.aws/credentials
 ```
 
-Go to Terraform Cloud: https://app.terraform.io
-<br />Create an account if you don't have one
+This project uses Terraform Cloud.
 
-What we want to do is created workspaces. Workspaces control deploying infrastructure to our different environments. We should have a workspace for dev, test, prod, and any other envs you may want.
+Terraform Cloud remotely deploys our infra and keeps track of all resources in AWS. It consists of 3 items we'll need to create:
+- `Organization`: Think of this as your company (even if you don't have one). It will contain all of your company's projects.
+- `Project`: A name you want to use for what you're working on. Mostly to help you stay organized. The UI, Backend, infra, all of it. Projects contain workspaces.
+- `Workspace`: Manages and deploys infra for an environment. You'll have a workspace for dev, test, prod, etc.
 
-To create a new workspace, click Add -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose default project in the dropdown -> Create
+First, go to Terraform Cloud (https://app.terraform.io) and create an account if you don't have one.
 
-Once created, on the right look for the `tags` dropdown, click it, type the name you want your project to be and hit enter. This will tell our project that it can use this workspace.
+To create an organization, go to https://app.terraform.io/app/organizations/new -> Give it any name you'd like -> Create organization
 
-Since workspaces control environments, we'll need to add some environment variables.
+To create a project, go to https://app.terraform.io -> New -> Project -> Give it any name you'd like.
+
+To create a workspace, go to https://app.terraform.io -> New -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose your project in the dropdown -> Create
+
+Once your workspace is created, on the right look for the `tags` dropdown, click it, type the name of your project and hit enter. This will tell our CLI and ./infra repository that it can use this workspace.
+
+Since workspaces manage environments, we'll need to add some environment variables.
 <br />
 On the left sidebar, click Variables -> Add the following variables with their key and value:
 
-Key | Value                                                      | Additional                                          | Explanation
+Key | Value                                                      | Additional                                          | Description
 --- |------------------------------------------------------------|-----------------------------------------------------| -------
 AWS_ACCESS_KEY_ID | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account
 AWS_SECRET_ACCESS_KEY | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account
-TF_CLI_ARGS | -var-file "environments/dev.tfvars"                      |                                                 | Tells this workspace to use your ./infra/environments/dev.tfvars config
+TF_CLI_ARGS | -var-file "environments/dev.tfvars"                      |                                                 | Tells this workspace to use your ./infra/environments/dev.tfvars environment variables. It appends "-var-file "environments/dev.tfvars" to every terraform command you run in your CLI
 
-Now you have a `dev workspace`.
+Now you have a `dev` workspace.
 
-Repeat these steps to create a `test workspace`. Do everything the same except name the workspace `"test"`. And set the `TF_CLI_ARGS` environment variable to  `-var-file "environments/test.tfvars"`
+Create another workspace but name it `test`. Do everything the same except set `TF_CLI_ARGS` to `-var-file "environments/test.tfvars"`. This makes sure it uses your test environment variables.
 
 In your CLI, Login to Terraform Cloud
 ```
