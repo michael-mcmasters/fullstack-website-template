@@ -46,11 +46,11 @@ Since workspaces manage environments, we'll need to add some environment variabl
 <br />
 On the left sidebar, click Variables -> Add the following variables with their key and value:
 
- Key                   | Value                                                      | Additional                                          | Description                                                                                                                           
------------------------|------------------------------------------------------------|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------
- AWS_ACCESS_KEY_ID     | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account                                                                                         
- AWS_SECRET_ACCESS_KEY | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account                                                                                         
- TF_CLI_ARGS_plan      | -var-file "environments/dev.tfvars"                        |                                                     | Tells this workspace to use your ./infra/environments/dev.tfvars environment variables when running Terraform plan and then applying 
+| Key                   | Value                                                      | Select Variable Category | Sensitive       | Description                                                                                                                          |
+|-----------------------|------------------------------------------------------------|--------------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| AWS_ACCESS_KEY_ID     | (set this to the value from the cat command you ran above) | Environment Variable     | Checkmark       | Allows Terraform to login to your AWS account                                                                                        |
+| AWS_SECRET_ACCESS_KEY | (set this to the value from the cat command you ran above) | Environment Variable     | Checkmark       | Allows Terraform to login to your AWS account                                                                                        |
+| TF_CLI_ARGS_plan      | -var-file "environments/dev.tfvars"                        | Environment Variable     | Don't checkmark | Tells this workspace to use your ./infra/environments/dev.tfvars environment variables when running Terraform plan and then applying |
 
 Now you have a `dev` workspace.
 
