@@ -19,7 +19,8 @@ public class PlaceholderService {
         try {
             Log.info("PlaceholderService is processing request");
 
-            String tableName = "website-and-infra-2-dynamodb";
+            String tableName = "website-and-infra-2-dynamodb-dev";
+//            String tableName = "website-and-infra-2-dynamodb-test";
             String key = "TestTableHashKey";
             String value = String.valueOf(tempCounter++);
 

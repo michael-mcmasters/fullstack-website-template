@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {default as LOCAL_CONFIG} from "./environments/local"
 import {default as DEV_CONFIG} from "./environments/dev.js"
+import {default as TEST_CONFIG} from "./environments/test.js"
 import {default as PROD_CONFIG} from "./environments/prod.js"
 
 export const CONFIG = getEnvConfig();
@@ -30,6 +31,9 @@ function getEnvConfig() {
     case ("dev"):
       console.log("Running dev configuration");
       return DEV_CONFIG;
+    case ("test"):
+      console.log("Running test configuration");
+      return TEST_CONFIG;
     case ("prod"):
       console.log("Running prod configuration");
       return PROD_CONFIG;

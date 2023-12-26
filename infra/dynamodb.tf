@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "default" {
-  name        = var.dynamodb_name
+  name        = "${var.dynamodb_name}-${var.env}"
   billing_mode = "PAY_PER_REQUEST"
   hash_key        = "TestTableHashKey"
   

@@ -15,10 +15,12 @@
     "start": "react-scripts start",
     "start:local": "REACT_APP_ENV=local react-scripts start",
     "start:dev": "REACT_APP_ENV=dev react-scripts start",
+    "start:test": "REACT_APP_ENV=test react-scripts start",
     "start:prod": "REACT_APP_ENV=prod react-scripts start",
     "build": "react-scripts build",
     "build:local": "REACT_APP_ENV=local react-scripts build",
     "build:dev": "REACT_APP_ENV=dev react-scripts build",
+    "build:test": "REACT_APP_ENV=test react-scripts build",
     "build:prod": "REACT_APP_ENV=prod react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

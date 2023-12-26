@@ -20,22 +20,41 @@ Technologies:
 ### 1) Prepare Terraform
 
 Run this command to get your AWS Access Key and Secret Key
+<br />
 ```
 cat /Users/<YOUR_NAME>/.aws/credentials
 ```
 
-Go to Terraform Cloud: https://app.terraform.io
+This project uses Terraform Cloud.
+
+Terraform Cloud remotely deploys our infra and keeps track of all resources in AWS. It consists of 3 items we'll need to create:
+- `Organization`: Think of this as your company (even if you don't have one). It will contain all of your company's projects.
+- `Project`: A name you want to use for what you're working on. Mostly to help you stay organized. The UI, Backend, infra, all of it. Projects contain workspaces.
+- `Workspace`: Manages and deploys infra for an environment. You'll have a workspace for dev, test, prod, etc.
+
+First, go to Terraform Cloud (https://app.terraform.io) and create an account if you don't have one.
+
+To create an organization, go to https://app.terraform.io/app/organizations/new -> Give it any name you'd like -> Create organization
+
+To create a project, go to https://app.terraform.io -> New -> Project -> Give it any name you'd like.
+
+To create a workspace, go to https://app.terraform.io -> New -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose your project in the dropdown -> Create
+
+Once your workspace is created, on the right look for the `tags` dropdown, click it, type the name of your project and hit enter. This will tell our CLI and ./infra repository that it can use this workspace.
+
+Since workspaces manage environments, we'll need to add some environment variables.
 <br />
-Create an account if you don't have one
+On the left sidebar, click Variables -> Add the following variables with their key and value:
 
-Create a new workspace by clicking Add -> Workspace -> CLI-Driven Workflow -> Give it the name of your project -> Choose default project in the dropdown -> Create
+ Key                   | Value                                                      | Additional                                          | Description                                                                                                                           
+-----------------------|------------------------------------------------------------|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------
+ AWS_ACCESS_KEY_ID     | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account                                                                                         
+ AWS_SECRET_ACCESS_KEY | (set this to the value from the cat command you ran above) | Select `Environment Variable` and check `Sensitive` | Allows Terraform to login to your AWS account                                                                                         
+ TF_CLI_ARGS_plan      | -var-file "environments/dev.tfvars"                        |                                                     | Tells this workspace to use your ./infra/environments/dev.tfvars environment variables when running Terraform plan and then applying 
 
-Once created, on the left sidebar, click Variables -> Add variable:
-1. Set `Key` to `AWS_ACCESS_KEY_ID`
-2. Set `Value` to `aws_access_key_id's` value (found from the cat command above)
-3. Select `Environment Variable`
-4. Check `Sensitive`
-5. Click `Add variable`
+Now you have a `dev` workspace.
+
+Create another workspace but name it `test`. Do everything the same except set `TF_CLI_ARGS` to `-var-file "environments/test.tfvars"`. This makes sure it uses your test environment variables.
 
 In your CLI, Login to Terraform Cloud
 ```
@@ -162,3 +181,18 @@ npm run start:local
 This will open a new Browser window and you should see everything running as normal.
 <br />
 If you see an error, refresh the page. Sometimes it glitches when first booting up.
+
+
+# Common Errors
+
+Problem: My website shows this error in the browser
+```
+<Error>
+    <Code>AccessDenied</Code>
+    <Message>Access Denied</Message>
+    <RequestId>KR1QVB45342YNH42</RequestId>
+    <HostId>elyCRDKZ//cHoWNikfoWDmlycdOxEJ0W8+NvuTmuA/w4RGCaat5XFBBiqPPPlrnJ1ga/FWrd5ZD2cqIuyc3AdA==</HostId>
+</Error>
+```
+Solution: Your S3 bucket is empty. Deploy code to your bucket and you should see your UI appear.
+If that doesn't work, something may be wrong with your IAM roles/policies or your CloudWatch configuration.

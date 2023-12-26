@@ -2,6 +2,10 @@ variable "project_tag" {
   default = "website-and-infra-2"
 }
 
+variable "env" {
+  default = "dev"
+}
+
 variable "api_gateway_name" {
   default = "website-and-infra-2-apigw"
 }
@@ -36,4 +40,9 @@ variable "s3_bucket_name" {
 
 variable "oac_name" {
   default = "website-and-infra-2-oac"
+}
+
+variable "region" {
+  default = "us-east-1"
+  description = "Optionally say something about this variable"
 }

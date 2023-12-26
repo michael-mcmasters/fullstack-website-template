@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 // Terraform Core: Reads all .tf files / configurations and builds the resource dependency graph
@@ -8,8 +8,14 @@ terraform {
   cloud {
     organization = "mcmasters"
 
+    # Switching between workspaces is how you deploy to dev, test, etc
     workspaces {
-      name = "website-and-infra-2"
+      
+      # Allows you to use all workspaces that have this tag in Terraform Cloud
+      # Run `terraform workspace list` to view these workspaces, or `terraform workspace select <WORKSPACE>` to switch to one
+      # There should be a workspace for dev and test
+      tags = ["website-and-infra-2"]
+      
     }
   }
   
@@ -21,5 +27,5 @@ terraform {
     }
   }
 
-  required_version = "~> 1.4"
+  required_version = ">= 1.4.6"
 }

@@ -1,6 +1,6 @@
 # Creates bucket
 resource "aws_s3_bucket" "website_bucket" {
-  bucket = var.s3_bucket_name
+  bucket = "${var.s3_bucket_name}-${var.env}"
 }
 
 # Makes bucket private
@@ -79,7 +79,7 @@ resource "aws_cloudfront_distribution" "cdn_static_site" {
 
 # Creates the OAC (Origin Access Control) which allows CloudFront to access the private bucket
 resource "aws_cloudfront_origin_access_control" "default" {
-  name                              = var.oac_name
+  name                              = "${var.oac_name}-${var.env}"
   description                       = "description of OAC"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"

@@ -67,6 +67,7 @@ public class DynamoDbService {
     private static DynamoDbClient openDynamoClient() {
         return DynamoDbClient.builder()
                 .region(Region.US_EAST_1)
+//                .region(Region.US_WEST_2)
                 .build();
     }
 }
