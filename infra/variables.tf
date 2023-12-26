@@ -2,6 +2,10 @@ variable "project_tag" {
   default = "website-and-infra-2"
 }
 
+variable "env" {
+  default = "dev"
+}
+
 variable "api_gateway_name" {
   default = "website-and-infra-2-apigw"
 }

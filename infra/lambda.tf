@@ -10,7 +10,7 @@ resource "aws_lambda_function" "default" {
   function_name = var.lambda_name
   role          = aws_iam_role.lambda_role.arn
   handler       = "org.mcmasters.Handler::handleRequest"
-  timeout       = 121
+  timeout       = 300
 
   runtime = var.lambda_runtime
 
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
 
 # The IAM role the lambda assumes
 resource "aws_iam_role" "lambda_role" {
-  name               = var.lambda_role_name
+  name               = "${var.lambda_role_name}-${var.env}"
   
   # Specifies what service is allowed to assume this role
   assume_role_policy = jsonencode({
@@ -49,7 +49,7 @@ resource "aws_iam_role" "lambda_role" {
 
 # A policy that will attach to the role - Allows Lambda to access tbe DynamoDB table
 resource "aws_iam_policy" "lambda_dynamodb_policy" {
-  name        = var.lambda_role_policy_to_dynamodb_name
+  name        = "${var.lambda_role_policy_to_dynamodb_name}-${var.env}"
   description = "IAM policy for Lambda to access DynamoDb"
 
   policy = <<EOF
@@ -67,7 +67,7 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
         "dynamodb:PutItem",
         "dynamodb:UpdateItem"
       ],
-      "Resource": "arn:aws:dynamodb:us-east-1:959175409202:table/${aws_dynamodb_table.default.name}"
+      "Resource": "arn:aws:dynamodb:${var.region}:*:table/${aws_dynamodb_table.default.name}"
     }
   ]
 }

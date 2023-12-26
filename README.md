@@ -181,3 +181,18 @@ npm run start:local
 This will open a new Browser window and you should see everything running as normal.
 <br />
 If you see an error, refresh the page. Sometimes it glitches when first booting up.
+
+
+# Common Errors
+
+Problem: My website shows this error in the browser
+```
+<Error>
+    <Code>AccessDenied</Code>
+    <Message>Access Denied</Message>
+    <RequestId>KR1QVB45342YNH42</RequestId>
+    <HostId>elyCRDKZ//cHoWNikfoWDmlycdOxEJ0W8+NvuTmuA/w4RGCaat5XFBBiqPPPlrnJ1ga/FWrd5ZD2cqIuyc3AdA==</HostId>
+</Error>
+```
+Solution: Your S3 bucket is empty. Deploy code to your bucket and you should see your UI appear.
+If that doesn't work, something may be wrong with your IAM roles/policies or your CloudWatch configuration.

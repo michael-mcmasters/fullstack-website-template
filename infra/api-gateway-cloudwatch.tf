@@ -9,7 +9,7 @@ resource "aws_api_gateway_account" "main" {
 
 # The IAM role assumed by API Gateway
 resource "aws_iam_role" "apigw_role" {
-  name               = var.api_gateway_role_name
+  name               = "${var.api_gateway_role_name}-${var.env}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
