@@ -5,6 +5,7 @@ import org.mcmasters.util.Log;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class CrudService {
 
@@ -24,8 +25,21 @@ public class CrudService {
         try {
             Log.info("CrudService is processing /get endpoint");
 
+            String key = "TestTableHashKey";
+            HashMap<String, AttributeValue> itemValues = new HashMap<>();
+
+            // TestTableHashKey column and its value
+            itemValues.put(
+                    key,
+                    AttributeValue.builder()
+                        .s("0")
+                        .build()
+            );
+
+            Map<String, AttributeValue> result = dynamoDbService.read(dynamoDbTable, itemValues);
+
             Log.info("CrudService completed processing /get endpoint");
-            return "GET Success!";
+            return result.toString();
         } catch (Exception e) {
             Log.error("Exception in CrudService while processing /get endpoint", e);
             throw e;
@@ -41,20 +55,20 @@ public class CrudService {
 
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
-            // TestTableHashKey and its value
+            // TestTableHashKey column and its value
             itemValues.put(
                     key,
                     AttributeValue.builder()
-                    .s(value)
-                    .build()
+                        .s(value)
+                        .build()
             );
 
-            // personName and its value
+            // personName column and its value
             itemValues.put(
                     "personName",
                     AttributeValue.builder()
-                    .s("BillyBob")
-                    .build()
+                        .s("BillyBob")
+                        .build()
             );
 
             dynamoDbService.save(dynamoDbTable, itemValues);
