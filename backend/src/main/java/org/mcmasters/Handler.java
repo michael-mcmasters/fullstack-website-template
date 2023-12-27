@@ -8,14 +8,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import org.mcmasters.service.ConfigService;
-import org.mcmasters.service.RequestService;
+import org.mcmasters.service.CrudService;
 import org.mcmasters.util.Log;
 
 public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private static final String apiVersion = "11";
 
-    private RequestService requestService;
+    private CrudService crudService;
 
     private ConfigService configService;
 
@@ -26,7 +26,15 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
             Log.info("Lambda received request for API version " + apiVersion + ". Request: " + request.toString());
             handleDependencyInjection();
 
-            String message = requestService.process(request.toString());
+            String message = "";
+            if (request.getPath().contains("/get")) {
+                Log.info("Received request for /get");
+                message = crudService.get(request);
+            } else if (request.getPath().contains("/add")) {
+                Log.info("Received request for /add");
+                message = crudService.add(request);
+            }
+
             String body = String.format("{ \"message\": \"%s\", \"version\": \"%s\" }", message, apiVersion);
             response = generateResponse(200, body);
 
@@ -50,8 +58,8 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         if (this.configService == null) {
             this.configService = new ConfigService();
         }
-        if (this.requestService == null) {
-            this.requestService = new RequestService();
+        if (this.crudService == null) {
+            this.crudService = new CrudService();
         }
     }
 
