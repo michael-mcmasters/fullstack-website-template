@@ -185,6 +185,13 @@ If you see an error, refresh the page. Sometimes it glitches when first booting 
 
 # Common Errors
 
+Problem: Terraform Apply prints this in the CLI
+```
+Warning: This plan was generated using a different version of Terraform, the diff presented here may be missing representations of recent features.
+```
+Solution: This error occurs when your CLI Terraform version is different from your Terraform Cloud version. But because Terraform Cloud is doing all of the work, I don't think this is anything to worry about. It's just letting you know that the Plan it's displaying may not be the exact plan you'll see in the Terraform Cloud console.
+
+
 Problem: My website shows this error in the browser
 ```
 <Error>
@@ -196,3 +203,14 @@ Problem: My website shows this error in the browser
 ```
 Solution: Your S3 bucket is empty. Deploy code to your bucket and you should see your UI appear.
 If that doesn't work, something may be wrong with your IAM roles/policies or your CloudWatch configuration.
+
+Problem: Terraform CLI gives you this error:
+```
+│ Error: Failed to decode current backend config
+│ 
+│ The backend configuration created by the most recent run of "terraform init" could not be decoded: EOF. The configuration may have been initialized by an earlier version that used an incompatible
+│ configuration structure. Run "terraform init -reconfigure" to force re-initialization of the backend.
+```
+Solution: This occured for me when I changed the name of variable in all places in Intellij. It asked me if I wanted to change it in all places. I said yes. And then realized it was modifying variables in ./infra/./terraform for some reason.
+<br />
+Delete your `./infra/./terraform` folder. Then re-run `terraform init`. This is safe because all of your state is stored in Terraform Cloud.
