@@ -7,7 +7,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import org.mcmasters.service.EnvironmentConfigService;
+import org.mcmasters.service.ConfigService;
 import org.mcmasters.service.RequestService;
 import org.mcmasters.util.Log;
 
@@ -17,7 +17,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 
     private RequestService requestService;
 
-    private EnvironmentConfigService environmentConfigService;
+    private ConfigService configService;
 
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent request, final Context context) {
@@ -25,7 +25,6 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         try {
             Log.info("Lambda received request for API version " + apiVersion + ". Request: " + request.toString());
             handleDependencyInjection();
-            environmentConfigService.setupConfig();
 
             String message = requestService.process(request.toString());
             String body = String.format("{ \"message\": \"%s\", \"version\": \"%s\" }", message, apiVersion);
@@ -48,11 +47,11 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
      * Otherwise Lambda may return an invalid response
      */
     private void handleDependencyInjection() {
+        if (this.configService == null) {
+            this.configService = new ConfigService();
+        }
         if (this.requestService == null) {
             this.requestService = new RequestService();
-        }
-        if (this.environmentConfigService == null) {
-            this.environmentConfigService = new EnvironmentConfigService();
         }
     }
 

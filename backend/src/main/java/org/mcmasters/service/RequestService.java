@@ -9,18 +9,20 @@ public class RequestService {
 
     private DynamoDbService dynamoDbService;
 
+    private final String dynamoDbTable;
+
     private int tempCounter = 0;
 
 
     public RequestService() {
         this.dynamoDbService = new DynamoDbService();
+        this.dynamoDbTable = ConfigService.config.dynamodbTable;
     }
 
     public String process(String request) {
         try {
             Log.info("PlaceholderService is processing request");
 
-            String tableName = EnvironmentConfigService.config.dynamodbTable;
             String key = "TestTableHashKey";
             String value = String.valueOf(tempCounter++);
 
@@ -42,7 +44,7 @@ public class RequestService {
                     .build()
             );
 
-            dynamoDbService.save(tableName, itemValues);
+            dynamoDbService.save(dynamoDbTable, itemValues);
 
             Log.info("PlaceholderService completed processing request");
             return "Success!";

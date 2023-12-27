@@ -11,6 +11,20 @@ import java.util.Set;
 
 public class DynamoDbService {
 
+    private final Region region;
+
+
+    public DynamoDbService() {
+        switch (ConfigService.config.region) {
+            case "us-east-1" -> this.region = Region.US_EAST_1;
+            case "us-west-2" -> this.region = Region.US_WEST_2;
+            default -> {
+                Log.error("Unable to determine region from env variables");
+                throw new RuntimeException("Unable to determine region from env variables");
+            }
+        }
+    }
+
     // Saves the given params to the database
     public void save(String tableName, HashMap<String, AttributeValue> itemValues) {
         Log.info("Saving to DynamoDb table: " + tableName);
@@ -66,14 +80,7 @@ public class DynamoDbService {
         }
     }
 
-    private static DynamoDbClient openDynamoClient() {
-        Region region = null;
-        if (EnvironmentConfigService.config.region.equals("us-east-1")) {
-            region = Region.US_EAST_1;
-        } else if (EnvironmentConfigService.config.region.equals("us-west-2")) {
-            region = Region.US_WEST_2;
-        }
-
+    private DynamoDbClient openDynamoClient() {
         return DynamoDbClient.builder()
                 .region(region)
                 .build();

@@ -7,12 +7,12 @@ import org.mcmasters.model.Config;
 
 import java.io.File;
 
-public class EnvironmentConfigService {
+public class ConfigService {
 
     public static Config config;
 
 
-    public void setupConfig() {
+    public ConfigService() {
         try {
             Log.info("Initializing environment config");
             if (config != null) {
@@ -25,12 +25,33 @@ public class EnvironmentConfigService {
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             config = mapper.readValue(envFile, Config.class);
 
-            Log.info("Completed initializing environment config");
+            Log.info("Completed initializing new environment config");
         } catch (Exception e) {
             Log.error("Exception while saving to DynamoDB.", e);
             throw new RuntimeException("Failed to load environment config");
         }
     }
+
+
+//    public void setupConfig() {
+//        try {
+//            Log.info("Initializing environment config");
+//            if (config != null) {
+//                Log.info("Using cached environment config for environment: " + System.getenv("env"));
+//                return;
+//            }
+//
+//            File envFile = getEnvFile();
+//
+//            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+//            config = mapper.readValue(envFile, Config.class);
+//
+//            Log.info("Completed initializing environment config");
+//        } catch (Exception e) {
+//            Log.error("Exception while saving to DynamoDB.", e);
+//            throw new RuntimeException("Failed to load environment config");
+//        }
+//    }
 
     private File getEnvFile() {
         switch (System.getenv("env")) {
