@@ -67,7 +67,7 @@ This will open your browser prompting you to login. Once you do it will give you
 
 In `./infra/main.tf`, set workspaces.name to the workspace name you just created
 
-In `./infra/variables.tf`, set the values so they are unique in your Cloud environement. Most of these will be the names of your resources in AWS
+In `./infra/variables.tf`, set the values so they are unique in your Cloud environment. Most of these will be the names of your resources in AWS
 
 Run these commands to deploy your infra
 ```
@@ -81,6 +81,7 @@ The console will log your API Gateway endpoint (your backend) and your Cloudfron
 ### 3) Prepare Code
 
 In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint
+In `./backend/src/main/resrouces/dev.yml`, set the variables to what you set them to in `./infra/variables.tf`
 
 Continue to the Deploy Backend and Deploy UI sections
 <br />
