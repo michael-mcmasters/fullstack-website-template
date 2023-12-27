@@ -27,12 +27,14 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
             handleDependencyInjection();
 
             String message = "";
-            if (request.getPath().contains("/get")) {
-                Log.info("Received request for /get");
+            if (request.getPath().contains("/get-item")) {
+                Log.info("Received request for /get-item endpoint");
                 message = crudService.get(request);
-            } else if (request.getPath().contains("/add")) {
-                Log.info("Received request for /add");
+            } else if (request.getPath().contains("/add-item")) {
+                Log.info("Received request for /add-item endpoint");
                 message = crudService.add(request);
+            } else {
+                throw new RuntimeException("Unknown endpoint " + request.getPath());
             }
 
             String body = String.format("{ \"message\": \"%s\", \"version\": \"%s\" }", message, apiVersion);

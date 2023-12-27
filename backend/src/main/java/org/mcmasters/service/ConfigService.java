@@ -32,27 +32,6 @@ public class ConfigService {
         }
     }
 
-
-//    public void setupConfig() {
-//        try {
-//            Log.info("Initializing environment config");
-//            if (config != null) {
-//                Log.info("Using cached environment config for environment: " + System.getenv("env"));
-//                return;
-//            }
-//
-//            File envFile = getEnvFile();
-//
-//            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-//            config = mapper.readValue(envFile, Config.class);
-//
-//            Log.info("Completed initializing environment config");
-//        } catch (Exception e) {
-//            Log.error("Exception while saving to DynamoDB.", e);
-//            throw new RuntimeException("Failed to load environment config");
-//        }
-//    }
-
     private File getEnvFile() {
         switch (System.getenv("env")) {
             case ("local"):

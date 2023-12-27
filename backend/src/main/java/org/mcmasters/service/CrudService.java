@@ -15,8 +15,6 @@ public class CrudService {
 
     private final String key;
 
-    private int tempCounter = 0;
-
 
     public CrudService() {
         this.dynamoDbService = new DynamoDbService();
@@ -26,7 +24,11 @@ public class CrudService {
 
     public String get(APIGatewayProxyRequestEvent request) {
         try {
-            Log.info("CrudService is processing /get endpoint");
+            Log.info("CrudService is processing /get-item endpoint");
+
+            String[] splitPath = request.getPath().split("/");
+            String param = splitPath[splitPath.length - 1];
+            Log.info("Endpoint param is " + param);
 
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
@@ -34,25 +36,27 @@ public class CrudService {
             itemValues.put(
                     key,
                     AttributeValue.builder()
-                        .s("0")
+                        .s(param)
                         .build()
             );
 
             Map<String, AttributeValue> result = dynamoDbService.read(dynamoDbTable, itemValues);
 
-            Log.info("CrudService completed processing /get endpoint");
+            Log.info("CrudService completed processing /get-item endpoint");
             return result.toString();
         } catch (Exception e) {
-            Log.error("Exception in CrudService while processing /get endpoint", e);
+            Log.error("Exception in CrudService while processing /get-item endpoint", e);
             throw e;
         }
     }
 
     public String add(APIGatewayProxyRequestEvent request) {
         try {
-            Log.info("CrudService is processing /add endpoint");
+            Log.info("CrudService is processing /add-item endpoint");
 
-            String value = String.valueOf(tempCounter++);
+            String[] splitPath = request.getPath().split("/");
+            String param = splitPath[splitPath.length - 1];
+            Log.info("Endpoint param is " + param);
 
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
@@ -60,7 +64,7 @@ public class CrudService {
             itemValues.put(
                     key,
                     AttributeValue.builder()
-                        .s(value)
+                        .s(param)
                         .build()
             );
 
@@ -74,10 +78,10 @@ public class CrudService {
 
             dynamoDbService.save(dynamoDbTable, itemValues);
 
-            Log.info("CrudService completed processing /add endpoint");
+            Log.info("CrudService completed processing /add-item endpoint");
             return "Success!";
         } catch (Exception e) {
-            Log.error("Exception in CrudService while processing /add endpoint", e);
+            Log.error("Exception in CrudService while processing /add-item endpoint", e);
             throw e;
         }
     }
