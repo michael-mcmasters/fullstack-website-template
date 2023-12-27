@@ -24,7 +24,7 @@ public class DynamoDbService {
                 PutItemResponse response = ddb.putItem(request);
                 Log.info(tableName + " was successfully updated. The request id is " +response.responseMetadata().requestId());
             } catch (ResourceNotFoundException e) {
-                Log.info(String.format("Error: The Amazon DynamoDB table \"{}\" can't be found.\n", tableName));
+                Log.error(String.format("Error: The Amazon DynamoDB table {} can't be found", tableName));
                 throw e;
             } catch (DynamoDbException e) {
                 Log.error("Exception writing to database", e);
@@ -33,7 +33,8 @@ public class DynamoDbService {
 
             Log.info("Completed saving to DynamoDb table: " + tableName);
         } catch (Exception ex) {
-            Log.error("Exception while saving to DynamoDB.", ex);
+            Log.error("Exception while saving to DynamoDb", ex);
+            throw new RuntimeException("Exception while saving to DynamoDB");
         } finally {
             ddb.close();
         }
@@ -65,9 +66,15 @@ public class DynamoDbService {
     }
 
     private static DynamoDbClient openDynamoClient() {
+        Region region = null;
+        if (ConfigProcessor.config.region.equals("us-east-1")) {
+            region = Region.US_EAST_1;
+        } else if (ConfigProcessor.config.region.equals("us-west-2")) {
+            region = Region.US_WEST_2;
+        }
+
         return DynamoDbClient.builder()
-                .region(Region.US_EAST_1)
-//                .region(Region.US_WEST_2)
+                .region(region)
                 .build();
     }
 }

@@ -19,8 +19,7 @@ public class PlaceholderService {
         try {
             Log.info("PlaceholderService is processing request");
 
-            String tableName = "website-and-infra-2-dynamodb-dev";
-//            String tableName = "website-and-infra-2-dynamodb-test";
+            String tableName = ConfigProcessor.config.dynamodbTable;
             String key = "TestTableHashKey";
             String value = String.valueOf(tempCounter++);
 
@@ -40,7 +39,7 @@ public class PlaceholderService {
             // personName and its value
             itemValues.put("personName",
                     AttributeValue.builder()
-                    .s("Peter")
+                    .s("BillyBob")
                     .build()
             );
 

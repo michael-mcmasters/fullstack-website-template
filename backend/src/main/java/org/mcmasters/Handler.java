@@ -13,16 +13,19 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
     private static final String version = "8";
 
     private PlaceholderService placeholderService;
+    private ConfigProcessor configProcessor;
 
 
     public Handler() {
         this.placeholderService = new PlaceholderService();
+        this.configProcessor = new ConfigProcessor();
     }
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent request, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         try {
             Log.info("Lambda received request for API version " + version + ". Request: " + request.toString());
+            configProcessor.init();
 
             placeholderService.process(request.toString());
             String body = String.format("{ \"message\": \"hello world\", \"version\": \"%s\" }", version);
