@@ -40,7 +40,7 @@ To create a project, go to https://app.terraform.io -> New -> Project -> Give it
 
 To create a workspace, go to https://app.terraform.io -> New -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose your project in the dropdown -> Create
 
-Once your workspace is created, on the right look for the `tags` dropdown, click it, type the name of your project and hit enter. This will tell our CLI and ./infra repository that it can use this workspace.
+Once your workspace is created, on the right look for the `tags` dropdown, click it, type the name of your project and hit enter. (Later on, this will go in your `./infra/main.tf` `workspaces.tags` property to let your CLI know it can use this workspace for your codebase.)
 
 Since workspaces manage environments, we'll need to add some environment variables.
 <br />
@@ -65,7 +65,8 @@ This will open your browser prompting you to login. Once you do it will give you
 
 ### 2) Deploy Infrastructure to Your AWS Cloud
 
-In `./infra/main.tf`, set workspaces.name to the workspace name you just created
+<!-- In `./infra/main.tf`, set workspaces.tags to the project name you just created -->
+In `./infra/main.tf`, in the workspaces.tags array, set it to the same tag that you gave your workspaces in the steps above.
 
 In `./infra/variables.tf`, set the values so they are unique in your Cloud environment. Most of these will be the names of your resources in AWS
 
