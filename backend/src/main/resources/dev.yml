@@ -1,2 +1,3 @@
 region: us-east-1
 dynamodbTable: website-and-infra-2-dynamodb-dev
+dynamodbKey: TestTableHashKey

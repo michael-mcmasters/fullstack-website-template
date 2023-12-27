@@ -34,6 +34,12 @@ variable "dynamodb_name" {
   default = "website-and-infra-2-dynamodb"
 }
 
+variable "dynamodb_key" {
+  type = string
+  description = "The name of the key for each row of data in DynamoDb. This key value must be supplied when adding or retreiving items from the database"
+  default = "TestTableHashKey"
+}
+
 variable "s3_bucket_name" {
   default = "website-and-infra-2"
 }

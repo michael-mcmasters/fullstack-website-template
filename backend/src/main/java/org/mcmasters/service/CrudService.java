@@ -13,19 +13,21 @@ public class CrudService {
 
     private final String dynamoDbTable;
 
+    private final String key;
+
     private int tempCounter = 0;
 
 
     public CrudService() {
         this.dynamoDbService = new DynamoDbService();
         this.dynamoDbTable = ConfigService.config.dynamodbTable;
+        this.key = ConfigService.config.dynamodbKey;
     }
 
     public String get(APIGatewayProxyRequestEvent request) {
         try {
             Log.info("CrudService is processing /get endpoint");
 
-            String key = "TestTableHashKey";
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
             // TestTableHashKey column and its value
@@ -50,7 +52,6 @@ public class CrudService {
         try {
             Log.info("CrudService is processing /add endpoint");
 
-            String key = "TestTableHashKey";
             String value = String.valueOf(tempCounter++);
 
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
