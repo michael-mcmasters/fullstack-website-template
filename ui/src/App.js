@@ -5,60 +5,69 @@ import {CONFIG} from "./index.js";
 
 function App() {
   
-  const [response, setResponse] = useState({});
+  const [addItemKey, setAddItemKey] = useState("");
+  const [addItemPersonName, setAddItemPersonName] = useState("");
+  const [addItemResponse, setAddItemResponse] = useState({});
   
-  useEffect(() => {
-    (async function addDataToDb() {
-      console.log("Fetching ...");
+  const [getItemKey, setGetItemKey] = useState("");
+  const [getItemResponse, setGetItemResponse] = useState({});
+  
+  
+  async function handleAddData() {
+    try {
+      setAddItemResponse("Loading ...");
       
       const data = {
-        "key": "apple",
-        "personName": "orange"
+        "key": addItemKey,
+        "personName": addItemPersonName
       }
       
       const response = await fetch(CONFIG.ADD_ENDPOINT, {
-        method: "POST", // or 'PUT'
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      
+
       const responseJson = await response.json();
-      setResponse(responseJson);
-      console.log("Fetched. Response is: " + responseJson);
-    })();
-  }, [])
+      setAddItemResponse(responseJson);
+    } catch (e) {
+      setAddItemResponse("Error ...");
+    }
+  }
   
-  // useEffect(() => {
-  //   (async function fetchDataFromDb() {
-  //     console.log("Fetching ...");
-  //     const response = await fetch(CONFIG.ADD_ENDPOINT);
-  //     const responseJson = await response.json();
-  //     setResponse(responseJson);
-  //     console.log("Fetched. Response is: " + responseJson);
-  //   })();
-  // }, [])
+  async function handleGetData() {
+    try {
+      setGetItemResponse("Loading ...");
+      const response = await fetch(`${CONFIG.GET_ENDPOINT}/${getItemKey}`);
+      const responseJson = await response.json();
+      setGetItemResponse(responseJson);
+    } catch (e) {
+      setGetItemResponse("Error ...");
+    }
+  }
   
   
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hi there!
-          <br />
-          {JSON.stringify(response)}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={{backgroundColor: "#282c34", height: "200vh"}}>
+      <img src={logo} className="App-logo" alt="logo" />
+      
+      <div style={{ backgroundColor: "teal", width: "30%", margin: "0 auto", marginTop: "5rem", padding: "1rem 2rem", borderRadius: "20px" }}>
+        <input type="text" placeholder="key" onChange={e => setAddItemKey(e.target.value)} />
+        <input type="text" placeholder="personName" onChange={e => setAddItemPersonName(e.target.value)} />
+        <button onClick={handleAddData}>Add Item</button>
+        <p style={{ fontSize: "1.1rem", marginBottom: "0" }}><b>/add-item API Response:</b><br /> {JSON.stringify(addItemResponse)}</p>
+      </div>
+
+
+      <br />
+      <br />
+      <div style={{ backgroundColor: "teal", width: "30%", margin: "0 auto", padding: "1rem 2rem", borderRadius: "20px" }}>
+        <input type="text" placeholder="key" onChange={e => setGetItemKey(e.target.value)} />
+        <button onClick={handleGetData}>Get Item</button>
+        <p style={{ fontSize: "1.1rem", marginBottom: "0" }}><b>/get-item API response:</b><br /> {JSON.stringify(getItemResponse)}</p>
+      </div>
     </div>
   );
 }

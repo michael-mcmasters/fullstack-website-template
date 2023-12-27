@@ -1,9 +1,13 @@
 package org.mcmasters.service;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mcmasters.model.AddRequestBody;
 import org.mcmasters.util.Log;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +26,7 @@ public class CrudService {
         this.key = ConfigService.config.dynamodbKey;
     }
 
-    public String get(APIGatewayProxyRequestEvent request) {
+    public String getItem(APIGatewayProxyRequestEvent request) {
         try {
             Log.info("CrudService is processing /get-item endpoint");
 
@@ -50,7 +54,7 @@ public class CrudService {
         }
     }
 
-    public String add(APIGatewayProxyRequestEvent request) {
+    public String addItem(APIGatewayProxyRequestEvent request) throws IOException {
         try {
             Log.info("CrudService is processing /add-item endpoint");
 
@@ -59,6 +63,12 @@ public class CrudService {
             Log.info("Endpoint param is " + param);
 
             System.out.println("body is " + request.getBody());
+//            request.getBody().get
+
+            ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+            AddRequestBody addRequestBody = mapper.readValue(request.getBody(), AddRequestBody.class);
+            System.out.println("addRequest.key: " + addRequestBody.key);
+            System.out.println("addRequest.personName: " + addRequestBody.personName);
 
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
@@ -66,7 +76,7 @@ public class CrudService {
             itemValues.put(
                     key,
                     AttributeValue.builder()
-                        .s(param)
+                        .s(addRequestBody.key)
                         .build()
             );
 
@@ -74,7 +84,7 @@ public class CrudService {
             itemValues.put(
                     "personName",
                     AttributeValue.builder()
-                        .s("BillyBob")
+                        .s(addRequestBody.personName)
                         .build()
             );
 

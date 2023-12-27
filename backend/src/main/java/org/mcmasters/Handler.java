@@ -1,5 +1,6 @@
 package org.mcmasters;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,17 +27,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
             Log.info("Lambda received request for API version " + apiVersion + ". Request: " + request.toString());
             handleDependencyInjection();
 
-            String message = "";
-            if (request.getPath().contains("/get-item")) {
-                Log.info("Received request for /get-item endpoint");
-                message = crudService.get(request);
-            } else if (request.getPath().contains("/add-item")) {
-                Log.info("Received request for /add-item endpoint");
-                message = crudService.add(request);
-            } else {
-                throw new RuntimeException("Unknown endpoint " + request.getPath());
-            }
-
+            String message = handleApi(request);
             String body = String.format("{ \"message\": \"%s\", \"version\": \"%s\" }", message, apiVersion);
             response = generateResponse(200, body);
 
@@ -63,6 +54,28 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         if (this.crudService == null) {
             this.crudService = new CrudService();
         }
+    }
+
+    private String handleApi(final APIGatewayProxyRequestEvent request) throws IOException {
+        if (request.getHttpMethod().equals("OPTIONS")) {
+            Log.info("Received OPTIONS request");
+            return "Success";
+        }
+        else if (request.getHttpMethod().equals("GET")) {
+            if (request.getPath().contains("/get-item")) {
+                Log.info("Received GET request for /get-item endpoint");
+                return crudService.getItem(request);
+            }
+        }
+        else if (request.getHttpMethod().equals("POST")) {
+            if (request.getPath().contains("/add-item")) {
+                Log.info("Received POST request for /add-item endpoint");
+                return crudService.addItem(request);
+            }
+        }
+
+        Log.error("Unknown endpoint " + request.getPath());
+        throw new RuntimeException("Unknown endpoint " + request.getPath());
     }
 
     private APIGatewayProxyResponseEvent generateResponse(int statusCode, String body) {
