@@ -2,14 +2,17 @@ package org.mcmasters.service;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.mcmasters.model.AddRequestBody;
+import org.mcmasters.model.AddItemRequestBody;
+import org.mcmasters.model.GetItemResponseBody;
 import org.mcmasters.util.Log;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CrudService {
 
@@ -26,7 +29,42 @@ public class CrudService {
         this.key = ConfigService.config.dynamodbKey;
     }
 
-    public String getItem(APIGatewayProxyRequestEvent request) {
+    public String addItem(APIGatewayProxyRequestEvent request) throws IOException {
+        try {
+            Log.info("CrudService is processing /add-item endpoint using body: " + request.getBody());
+
+            ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+            AddItemRequestBody addItemRequestBody = mapper.readValue(request.getBody(), AddItemRequestBody.class);
+
+            HashMap<String, AttributeValue> itemValues = new HashMap<>();
+
+            // TestTableHashKey column and its value
+            itemValues.put(
+                    key,
+                    AttributeValue.builder()
+                            .s(addItemRequestBody.key)
+                            .build()
+            );
+
+            // personName column and its value
+            itemValues.put(
+                    "personName",
+                    AttributeValue.builder()
+                            .s(addItemRequestBody.personName)
+                            .build()
+            );
+
+            dynamoDbService.save(dynamoDbTable, itemValues);
+
+            Log.info("CrudService completed processing /add-item endpoint");
+            return "Successfully added item to DynamoDb!";
+        } catch (Exception e) {
+            Log.error("Exception in CrudService while processing /add-item endpoint", e);
+            throw e;
+        }
+    }
+
+    public GetItemResponseBody getItem(APIGatewayProxyRequestEvent request) {
         try {
             Log.info("CrudService is processing /get-item endpoint");
 
@@ -45,55 +83,15 @@ public class CrudService {
             );
 
             Map<String, AttributeValue> result = dynamoDbService.read(dynamoDbTable, itemValues);
+            GetItemResponseBody getItemResponseBody = new GetItemResponseBody();
+            getItemResponseBody.setKey(result.get("TestTableHashKey").s());
+            getItemResponseBody.setPersonName(result.get("personName").s());
 
             Log.info("CrudService completed processing /get-item endpoint");
-            return result.toString();
+            return getItemResponseBody;
+
         } catch (Exception e) {
             Log.error("Exception in CrudService while processing /get-item endpoint", e);
-            throw e;
-        }
-    }
-
-    public String addItem(APIGatewayProxyRequestEvent request) throws IOException {
-        try {
-            Log.info("CrudService is processing /add-item endpoint");
-
-            String[] splitPath = request.getPath().split("/");
-            String param = splitPath[splitPath.length - 1];
-            Log.info("Endpoint param is " + param);
-
-            System.out.println("body is " + request.getBody());
-//            request.getBody().get
-
-            ObjectMapper mapper = new ObjectMapper(new JsonFactory());
-            AddRequestBody addRequestBody = mapper.readValue(request.getBody(), AddRequestBody.class);
-            System.out.println("addRequest.key: " + addRequestBody.key);
-            System.out.println("addRequest.personName: " + addRequestBody.personName);
-
-            HashMap<String, AttributeValue> itemValues = new HashMap<>();
-
-            // TestTableHashKey column and its value
-            itemValues.put(
-                    key,
-                    AttributeValue.builder()
-                        .s(addRequestBody.key)
-                        .build()
-            );
-
-            // personName column and its value
-            itemValues.put(
-                    "personName",
-                    AttributeValue.builder()
-                        .s(addRequestBody.personName)
-                        .build()
-            );
-
-            dynamoDbService.save(dynamoDbTable, itemValues);
-
-            Log.info("CrudService completed processing /add-item endpoint");
-            return "Success!";
-        } catch (Exception e) {
-            Log.error("Exception in CrudService while processing /add-item endpoint", e);
             throw e;
         }
     }

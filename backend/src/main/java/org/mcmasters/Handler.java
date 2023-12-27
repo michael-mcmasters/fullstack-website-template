@@ -3,11 +3,17 @@ package org.mcmasters;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mcmasters.model.AddItemRequestBody;
+import org.mcmasters.model.GetItemResponseBody;
 import org.mcmasters.service.ConfigService;
 import org.mcmasters.service.CrudService;
 import org.mcmasters.util.Log;
@@ -27,9 +33,9 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
             Log.info("Lambda received request for API version " + apiVersion + ". Request: " + request.toString());
             handleDependencyInjection();
 
-            String message = handleApi(request);
-            String body = String.format("{ \"message\": \"%s\", \"version\": \"%s\" }", message, apiVersion);
-            response = generateResponse(200, body);
+            Object message = handleApi(request);
+            JsonNode jsonNode = convertToJson(message);
+            response = generateResponse(200, String.valueOf(jsonNode));
 
             Log.info("Completed processing request");
             return response;
@@ -56,16 +62,10 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
         }
     }
 
-    private String handleApi(final APIGatewayProxyRequestEvent request) throws IOException {
+    private Object handleApi(final APIGatewayProxyRequestEvent request) throws IOException {
         if (request.getHttpMethod().equals("OPTIONS")) {
             Log.info("Received OPTIONS request");
             return "Success";
-        }
-        else if (request.getHttpMethod().equals("GET")) {
-            if (request.getPath().contains("/get-item")) {
-                Log.info("Received GET request for /get-item endpoint");
-                return crudService.getItem(request);
-            }
         }
         else if (request.getHttpMethod().equals("POST")) {
             if (request.getPath().contains("/add-item")) {
@@ -73,9 +73,20 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
                 return crudService.addItem(request);
             }
         }
+        else if (request.getHttpMethod().equals("GET")) {
+            if (request.getPath().contains("/get-item")) {
+                Log.info("Received GET request for /get-item endpoint");
+                return crudService.getItem(request);
+            }
+        }
 
         Log.error("Unknown endpoint " + request.getPath());
         throw new RuntimeException("Unknown endpoint " + request.getPath());
+    }
+
+    private JsonNode convertToJson(Object message) {
+        ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+        return mapper.valueToTree(message);
     }
 
     private APIGatewayProxyResponseEvent generateResponse(int statusCode, String body) {
