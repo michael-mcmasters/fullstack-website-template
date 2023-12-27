@@ -8,14 +8,37 @@ function App() {
   const [response, setResponse] = useState({});
   
   useEffect(() => {
-    (async function fetchInitialData() {
+    (async function addDataToDb() {
       console.log("Fetching ...");
-      const response = await fetch(CONFIG.ADD_ENDPOINT);
+      
+      const data = {
+        "key": "apple",
+        "personName": "orange"
+      }
+      
+      const response = await fetch(CONFIG.ADD_ENDPOINT, {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
       const responseJson = await response.json();
       setResponse(responseJson);
       console.log("Fetched. Response is: " + responseJson);
     })();
   }, [])
+  
+  // useEffect(() => {
+  //   (async function fetchDataFromDb() {
+  //     console.log("Fetching ...");
+  //     const response = await fetch(CONFIG.ADD_ENDPOINT);
+  //     const responseJson = await response.json();
+  //     setResponse(responseJson);
+  //     console.log("Fetched. Response is: " + responseJson);
+  //   })();
+  // }, [])
   
   
   return (

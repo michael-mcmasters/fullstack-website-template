@@ -58,6 +58,8 @@ public class CrudService {
             String param = splitPath[splitPath.length - 1];
             Log.info("Endpoint param is " + param);
 
+            System.out.println("body is " + request.getBody());
+
             HashMap<String, AttributeValue> itemValues = new HashMap<>();
 
             // TestTableHashKey column and its value
