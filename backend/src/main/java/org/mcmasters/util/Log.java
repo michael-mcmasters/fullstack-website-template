@@ -1,4 +1,4 @@
-package org.mcmasters;
+package org.mcmasters.util;
 
 public class Log {
 

@@ -1,5 +1,6 @@
-package org.mcmasters;
+package org.mcmasters.service;
 
+import org.mcmasters.util.Log;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
@@ -67,9 +68,9 @@ public class DynamoDbService {
 
     private static DynamoDbClient openDynamoClient() {
         Region region = null;
-        if (ConfigProcessor.config.region.equals("us-east-1")) {
+        if (EnvironmentConfigService.config.region.equals("us-east-1")) {
             region = Region.US_EAST_1;
-        } else if (ConfigProcessor.config.region.equals("us-west-2")) {
+        } else if (EnvironmentConfigService.config.region.equals("us-west-2")) {
             region = Region.US_WEST_2;
         }
 

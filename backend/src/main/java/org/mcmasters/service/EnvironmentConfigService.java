@@ -1,18 +1,24 @@
-package org.mcmasters;
+package org.mcmasters.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.mcmasters.util.Log;
+import org.mcmasters.model.Config;
 
 import java.io.File;
 
-public class ConfigProcessor {
+public class EnvironmentConfigService {
 
     public static Config config;
 
 
-    public void init() {
+    public void setupConfig() {
         try {
             Log.info("Initializing environment config");
+            if (config != null) {
+                Log.info("Using cached environment config for environment: " + System.getenv("env"));
+                return;
+            }
 
             File envFile = getEnvFile();
 
