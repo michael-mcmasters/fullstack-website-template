@@ -10,7 +10,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 
 public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String version = "8";
+    private static final String version = "9";
 
     private PlaceholderService placeholderService;
     private ConfigProcessor configProcessor;

@@ -11,6 +11,9 @@ resource "aws_lambda_function" "default" {
   role          = aws_iam_role.lambda_role.arn
   handler       = "org.mcmasters.Handler::handleRequest"
   timeout       = 300
+  
+  # The more memory, the faster Lambda will run: https://docs.aws.amazon.com/lambda/latest/operatorguide/computing-power.html
+  memory_size = "1536"
 
   runtime = var.lambda_runtime
 

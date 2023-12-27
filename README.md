@@ -183,16 +183,9 @@ This will open a new Browser window and you should see everything running as nor
 If you see an error, refresh the page. Sometimes it glitches when first booting up.
 
 
-# Common Errors
+# Common Issues
 
-Problem: Terraform Apply prints this in the CLI
-```
-Warning: This plan was generated using a different version of Terraform, the diff presented here may be missing representations of recent features.
-```
-Solution: This error occurs when your CLI Terraform version is different from your Terraform Cloud version. But because Terraform Cloud is doing all of the work, I don't think this is anything to worry about. It's just letting you know that the Plan it's displaying may not be the exact plan you'll see in the Terraform Cloud console.
-
-
-Problem: My website shows this error in the browser
+### Problem: My website shows this error on the page:
 ```
 <Error>
     <Code>AccessDenied</Code>
@@ -202,9 +195,16 @@ Problem: My website shows this error in the browser
 </Error>
 ```
 Solution: Your S3 bucket is empty. Deploy code to your bucket and you should see your UI appear.
+<br />
 If that doesn't work, something may be wrong with your IAM roles/policies or your CloudWatch configuration.
 
-Problem: Terraform CLI gives you this error:
+### Problem: Terraform Apply prints this in the CLI
+```
+Warning: This plan was generated using a different version of Terraform, the diff presented here may be missing representations of recent features.
+```
+Solution: This error occurs when your CLI Terraform version is different from your Terraform Cloud version. But because Terraform Cloud is doing all of the work, I don't think this is anything to worry about. It's just letting you know that the Plan it's displaying may not be the exact plan you'll see in the Terraform Cloud console.
+
+### Problem: Terraform CLI gives you this error:
 ```
 │ Error: Failed to decode current backend config
 │ 
@@ -214,3 +214,9 @@ Problem: Terraform CLI gives you this error:
 Solution: This occured for me when I changed the name of variable in all places in Intellij. It asked me if I wanted to change it in all places. I said yes. And then realized it was modifying variables in ./infra/./terraform for some reason.
 <br />
 Delete your `./infra/./terraform` folder. Then re-run `terraform init`. This is safe because all of your state is stored in Terraform Cloud.
+
+### Problem: Lambda fails on the first call, then succeeds after.
+Solution: Most likely the Lambda is timing out (you can verify this in the API Gateway Cloudwatch logs). Increasing the timeout may help (though it never did for me.) The solution that did work was increasing Lambda's memory. The more memory, the faster Lambda runs. Especially if it's communicating with other AWS services such as S3 or DynamoDb. See the chart on this page to see how memory size decreases a Lambda's duration: https://docs.aws.amazon.com/lambda/latest/operatorguide/computing-power.html
+
+### Problem: Lambda takes too long on the first call
+Solution: Most likely increasing the Lambda's memory will fix this. (See above problem/solution for more info.)
