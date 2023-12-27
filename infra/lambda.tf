@@ -16,7 +16,7 @@ resource "aws_lambda_function" "default" {
 
   environment {
     variables = {
-      foo = "bar"
+      env = var.env
     }
   }
 }

@@ -1,0 +1,2 @@
+region: us-west-2
+dynamodbTable: website-and-infra-2-dynamodb-test
