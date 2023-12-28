@@ -14,14 +14,13 @@ public class ConfigService {
 
     public ConfigService() {
         try {
-            Log.info("Initializing environment config");
+            Log.info("Initializing environment config for environment:" + System.getenv("env"));
             if (config != null) {
                 Log.info("Using cached environment config for environment: " + System.getenv("env"));
                 return;
             }
 
-            File envFile = getEnvFile();
-
+            File envFile = getEnvironmentFile();
             ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
             config = mapper.readValue(envFile, Config.class);
 
@@ -32,7 +31,7 @@ public class ConfigService {
         }
     }
 
-    private File getEnvFile() {
+    private File getEnvironmentFile() {
         switch (System.getenv("env")) {
             case ("local"):
                 Log.info("Running local configuration");

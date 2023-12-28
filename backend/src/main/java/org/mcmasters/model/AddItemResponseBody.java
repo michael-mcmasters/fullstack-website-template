@@ -3,10 +3,9 @@ package org.mcmasters.model;
 import lombok.Data;
 
 @Data
-public class GetItemResponseBody {
+public class AddItemResponseBody {
 
-    public String key;
-    public String personName;
+    public String message;
     public String apiVersion;
 
 }
