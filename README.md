@@ -83,7 +83,8 @@ The console will log your API Gateway endpoint (your backend) and your Cloudfron
 ### 3) Prepare Code
 
 In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint
-In `./backend/src/main/resrouces/dev.yml`, set the variables to what you set them to in `./infra/variables.tf`
+
+In `./backend/src/main/resrouces/dev.yml`, make sure the variables match what you set them to in `./infra/variables.tf`. If not, update them.
 
 Continue to the Deploy Backend and Deploy UI sections
 <br />
@@ -100,8 +101,10 @@ mvn package
 ```
 
 Deploy the newly generated .jar file to your Lambda
+<br />
+<LAMBDA_NAME> is the name you set `lambda_name` to in `./infra/variables.tf`
 ```
-aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://backend/target/lambda-placeholder-code-1.0-SNAPSHOT.jar
+aws lambda update-function-code --function-name <LAMBDA_NAME> --zip-file fileb://target/lambda-placeholder-code-1.0-SNAPSHOT.jar
 ```
 
 If successful, the CLI will let you know. You can also log into AWS, go to your Lambda, and it will say Last Modified  a few seconds or minutes ago
@@ -113,6 +116,8 @@ In React, build the project to generate a ./build directory
 ```
 npm run build:dev
 ```
+
+Get your <BUCKET_NAME>. It should be `s3_bucket_name`-`env` from your `./infra/variables.tf`. The name and env are appended to make the bucket unique in your Cloud environement. The CLI also should have printed it when you ran Terraform Apply. You can also go to the AWS Console -> S3 to see it.
 
 Delete all current objects in the bucket
 ```
