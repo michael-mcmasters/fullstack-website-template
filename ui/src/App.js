@@ -19,7 +19,7 @@ function App() {
       
       const data = {
         "key": addItemKey,
-        "personName": addItemPersonName
+        [CONFIG.DYNAMODB_PERSON_NAME]: addItemPersonName
       }
       
       const response = await fetch(CONFIG.ADD_ENDPOINT, {

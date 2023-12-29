@@ -21,11 +21,14 @@ public class CrudService {
 
     private final String key;
 
+    private final String personName;
+
 
     public CrudService() {
         this.dynamoDbService = new DynamoDbService();
         this.dynamoDbTable = ConfigService.config.dynamodbTable;
         this.key = ConfigService.config.dynamodbKey;
+        this.personName = ConfigService.config.dynamodbPersonName;
     }
 
     public AddItemResponseBody addItem(APIGatewayProxyRequestEvent request, String apiVersion) throws IOException {
@@ -89,7 +92,7 @@ public class CrudService {
             Map<String, AttributeValue> result = dynamoDbService.read(dynamoDbTable, itemValues);
             GetItemResponseBody getItemResponseBody = new GetItemResponseBody();
             getItemResponseBody.setKey(result.get(key).s());
-            getItemResponseBody.setPersonName(result.get("personName").s());
+            getItemResponseBody.setPersonName(result.get(personName).s());
             getItemResponseBody.setApiVersion(apiVersion);
 
             Log.info("CrudService completed processing /get-item endpoint");

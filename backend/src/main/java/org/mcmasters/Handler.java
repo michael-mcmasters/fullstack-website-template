@@ -16,7 +16,7 @@ import org.mcmasters.util.Log;
 
 public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-    private static final String apiVersion = "12";
+    private static final String apiVersion = "13";
 
     private CrudService crudService;
 
