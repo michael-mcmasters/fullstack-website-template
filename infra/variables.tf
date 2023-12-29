@@ -1,9 +1,17 @@
-variable "project_tag" {
-  default = "website-and-infra-2"
-}
+# This page declares variables and gives default values
+# Vars in ./infra/environments/dev.tfvars and ./infra/environments/test.tfvars will override them
 
 variable "env" {
   default = "dev"
+}
+
+variable "region" {
+  default = "us-east-1"
+  description = "Optionally say something about this variable"
+}
+
+variable "project_tag" {
+  default = "website-and-infra-2"
 }
 
 variable "api_gateway_name" {
@@ -34,6 +42,7 @@ variable "dynamodb_name" {
   default = "website-and-infra-2-dynamodb"
 }
 
+# If you change this value, make sure to change it in ./backend/src/main/resources/local.yml, dev.yml, and test.yml also
 variable "dynamodb_key" {
   type = string
   description = "The name of the key for each row of data in DynamoDb. This key value must be supplied when adding or retreiving items from the database"
@@ -45,10 +54,7 @@ variable "s3_bucket_name" {
 }
 
 variable "oac_name" {
+  type = string
+  description = "Origin Access Control (OAC): A permission (similar to IAM) that allows CloudFront to access your S3 bucket, even when it is a private bucket"
   default = "website-and-infra-2-oac"
-}
-
-variable "region" {
-  default = "us-east-1"
-  description = "Optionally say something about this variable"
 }

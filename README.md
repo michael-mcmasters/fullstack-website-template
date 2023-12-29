@@ -74,6 +74,7 @@ Run these commands to deploy your infra
 ```
 cd ./infra
 terraform init
+terraform workspace select <your_dev_workspace>
 terraform apply
 ```
 
