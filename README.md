@@ -78,6 +78,16 @@ terraform workspace select <your_dev_workspace>
 terraform apply
 ```
 
+The first time you deploy, it may give you an error like this:
+```
+│ Error: updating API Gateway Stage failed: BadRequestException: CloudWatch Logs role ARN must be set in account settings to enable logging
+│ 
+│   with aws_api_gateway_method_settings.example,
+│   on api-gateway.tf line 68, in resource "aws_api_gateway_method_settings" "example":
+│   68: resource "aws_api_gateway_method_settings" "example" {
+```
+Simply re-run terraform apply and the error should go away. (More info on this error is mentioned in the Common Issues section.)
+
 The console will log your API Gateway endpoint (your backend) and your Cloudfront domain name (your website)
 
 ### 3) Prepare Code
