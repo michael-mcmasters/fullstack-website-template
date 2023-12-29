@@ -207,7 +207,7 @@ Warning: This plan was generated using a different version of Terraform, the dif
 ```
 Solution: This error occurs when your CLI Terraform version is different from your Terraform Cloud version. But because Terraform Cloud is doing all of the work, I don't think this is anything to worry about. It's just letting you know that the Plan it's displaying may not be the exact plan you'll see in the Terraform Cloud console.
 
-### Problem: Terraform CLI gives you this error:
+### Problem: Terraform CLI gives you this error (1)
 ```
 │ Error: Failed to decode current backend config
 │ 
@@ -217,6 +217,18 @@ Solution: This error occurs when your CLI Terraform version is different from yo
 Solution: This occured for me when I changed the name of variable in all places in Intellij. It asked me if I wanted to change it in all places. I said yes. And then realized it was modifying variables in ./infra/./terraform for some reason.
 <br />
 Delete your `./infra/./terraform` folder. Then re-run `terraform init`. This is safe because all of your state is stored in Terraform Cloud.
+
+### Problem: Terraform CLI gives you this error (2)
+```
+│ Error: updating API Gateway Stage failed: BadRequestException: CloudWatch Logs role ARN must be set in account settings to enable logging
+│ 
+│   with aws_api_gateway_method_settings.example,
+│   on api-gateway.tf line 68, in resource "aws_api_gateway_method_settings" "example":
+│   68: resource "aws_api_gateway_method_settings" "example" {
+│ 
+```
+<!-- Solution: This occured the first time I ran terraform to a new env. Just re-run it  -->
+Solution: Just re-run terraform and it should work. Sometimes Terraform provisions resources out of order when one is a dependency of another. In this case, it provisioned CloudWatch Logs Role before provisioning the account setting that allows that role. Often if you get an error in Terraform, re-running it will fix it.
 
 ### Problem: Lambda fails on the first call, then succeeds after.
 Solution: Most likely the Lambda is timing out (you can verify this in the API Gateway Cloudwatch logs). Increasing the timeout may help (though it never did for me.) The solution that did work was increasing Lambda's memory. The more memory, the faster Lambda runs. Especially if it's communicating with other AWS services such as S3 or DynamoDb. See the chart on this page to see how memory size decreases a Lambda's duration: https://docs.aws.amazon.com/lambda/latest/operatorguide/computing-power.html
