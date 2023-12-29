@@ -72,7 +72,7 @@ In `./infra/variables.tf`, set the values so they are unique in your Cloud envir
 
 In `./infra/environments/dev.tfvars`, change your `region`. Leave `env` set to dev.
 
-In `./infra/environments/test.tfvars`, change your `region`. Leave `env` set to dev.
+In `./infra/environments/test.tfvars`, change your `region`. Leave `env` set to test.
 
 Run these commands to deploy your infra
 ```
