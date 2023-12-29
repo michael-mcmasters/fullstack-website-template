@@ -70,10 +70,6 @@ In `./infra/main.tf`, in the workspaces.tags array, set it to the same tag that 
 
 In `./infra/variables.tf`, set the values so they are unique in your Cloud environment. Most of these will be the names of your resources in AWS
 
-In `./infra/environments/dev.tfvars`, change your `region`. Leave `env` set to dev.
-
-In `./infra/environments/test.tfvars`, change your `region`. Leave `env` set to test.
-
 Run these commands to deploy your infra
 ```
 cd ./infra
