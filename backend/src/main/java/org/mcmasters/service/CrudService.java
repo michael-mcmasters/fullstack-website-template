@@ -88,7 +88,7 @@ public class CrudService {
 
             Map<String, AttributeValue> result = dynamoDbService.read(dynamoDbTable, itemValues);
             GetItemResponseBody getItemResponseBody = new GetItemResponseBody();
-            getItemResponseBody.setKey(result.get("TestTableHashKey").s());
+            getItemResponseBody.setKey(result.get(key).s());
             getItemResponseBody.setPersonName(result.get("personName").s());
             getItemResponseBody.setApiVersion(apiVersion);
 
