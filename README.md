@@ -16,8 +16,8 @@ Technologies:
 - Route53
 - S3
 
-# Setup
 ### 1) Prepare Terraform
+We start with preparing Terraform because we can't run the app locally until AWS resources are provisioned (such as DynamoDb).
 
 Run this command to get your AWS Access Key and Secret Key
 <br />
@@ -94,7 +94,9 @@ The console will log your API Gateway endpoint (your backend) and your Cloudfron
 
 In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint
 
-In `./backend/src/main/resrouces/dev.yml`, make sure the variables match what you set them to in `./infra/variables.tf`. If not, update them.
+In `./backend/src/main/resrouces/dev.yml`, make sure the variables match what you set them to in `./infra/variables.tf`. If not, update them. For `dynamodbTable` make sure `-dev` is appended to the end.
+
+In `./backend/src/main/resrouces/local.yml`, copy/paste your dev.yml config into here (since when you run the app locally, it will hit your Dev resources in AWS.)
 
 Continue to the Deploy Backend and Deploy UI sections
 <br />
