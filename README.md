@@ -118,12 +118,6 @@ If successful, the CLI will let you know. You can also log into AWS, go to your 
 # Deploy UI
 Make sure you're in your ./ui directory with `cd ./ui`
 
-If on Windows
-```
-npm install cross-env
-```
-Go to `package.json` and change `build:dev` to "cross-env REACT_APP_ENV=dev react-scripts build". Change the other build and start commands as well.
-
 In React, build the project to generate a ./build directory
 ```
 npm run build:dev
