@@ -38,9 +38,9 @@ To create an organization, go to https://app.terraform.io/app/organizations/new 
 
 To create a project, go to https://app.terraform.io -> New -> Project -> Give it any name you'd like.
 
-To create a workspace, go to https://app.terraform.io -> New -> Workspace -> CLI-Driven Workflow -> name it "dev" -> Choose your project in the dropdown -> Create
+To create a workspace, go to https://app.terraform.io -> New -> Workspace -> CLI-Driven Workflow -> name it "<MY_PROJECT>-dev" (replace <MY_PROJECT> with the name you used above) -> Choose your project in the dropdown -> Create
 
-Once your workspace is created, on the right look for the `tags` dropdown, click it, type the name of your project and hit enter. (Later on, this will go in your `./infra/main.tf` `workspaces.tags` property to let your CLI know it can use this workspace for your codebase.)
+Once your workspace is created, on the right, click `Manage Tags`, under Tag Key set the name of your project to what you used above, ignore Tag value, click Save. (Later on, this will go in your `./infra/main.tf` `workspaces.tags` property to let your CLI know it can use this workspace for your codebase.)
 
 Since workspaces manage environments, we'll need to add some environment variables.
 <br />
