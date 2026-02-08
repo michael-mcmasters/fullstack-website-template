@@ -73,6 +73,11 @@ resource "aws_api_gateway_method_settings" "example" {
   settings {
     metrics_enabled = true
     logging_level   = "INFO"
+
+    # Protects against the API being hit too often and causing high costs - Downside is all users will get '429 Too Many Requests'
+    # (If protecting endpoints with access-keys, can throttle requests per key/user instead)
+    throttling_rate_limit  = 100 # Average rate requests coming in - Ensures normal traffic flows smoothly
+    throttling_burst_limit = 200 # Can allow short bursts of increased traffic temporarily - Ensures short spikes don’t get immediately rejected
   }
 }
 
