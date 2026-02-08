@@ -92,17 +92,11 @@ The console will log your API Gateway endpoint (your backend) and your Cloudfron
 
 ### 3) Prepare Code
 
-In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint
+In `./ui/src/environments/dev.js`, set BASE_PATH to your new API Gateway endpoint. (Replace <REPLACEME>)
 
 In `./backend/src/main/resrouces/dev.yml`, make sure the variables match what you set them to in `./infra/variables.tf`. If not, update them. For `dynamodbTable` make sure `-dev` is appended to the end.
 
 In `./backend/src/main/resrouces/local.yml`, copy/paste your dev.yml config into here (since when you run the app locally, it will hit your Dev resources in AWS.)
-
-Continue to the Deploy Backend and Deploy UI sections
-<br />
-When finished, you will see your live website in your browser
-
-
 
 # Deploy Backend
 Make sure you're in your ./backend directory with `cd ./backend`
